@@ -1,0 +1,211 @@
+Substitution
+
+1.ceaser
+def encrypt(text, shift):
+    encrypted_text = ""
+    for char in text:
+        if char.isalpha():
+            shifted = ord(char) + shift
+            if char.islower():
+                if shifted > ord('z'):
+                    shifted -= 26
+                elif shifted < ord('a'):
+                    shifted += 26
+            elif char.isupper():
+                if shifted > ord('Z'):
+                    shifted -= 26
+                elif shifted < ord('A'):
+                    shifted += 26
+            encrypted_text += chr(shifted)
+        else:
+            encrypted_text += char
+    return encrypted_text
+
+def decrypt(text, shift):
+    return encrypt(text, -shift)
+
+# Example usage:
+text = "hwwlo hdh"
+shift = 3
+encrypted_text = encrypt(text, shift)
+print("Encrypted:", encrypted_text)
+decrypted_text = decrypt(encrypted_text, shift)
+print("Decrypted:", decrypted_text)
+
+
+The provided code implements a simple Caesar cipher encryption and decryption algorithm in Python. Let's break down each part of the code:
+
+Encryption Function (encrypt):
+Parameters:
+text: The plaintext message to be encrypted.
+shift: The number of positions each character in the plaintext is shifted in the alphabet.
+Process:
+The function iterates over each character in the input text.
+For each alphabetic character (determined using char.isalpha()), the function calculates the shifted character by adding the shift value to the Unicode code point of the character.
+If the character is lowercase (char.islower()), it ensures that the shifted character stays within the lowercase alphabet range ('a' to 'z') by handling wraparound if necessary.
+If the character is uppercase (char.isupper()), it ensures that the shifted character stays within the uppercase alphabet range ('A' to 'Z') by handling wraparound if necessary.
+Non-alphabetic characters are left unchanged.
+Return:
+The encrypted text with each alphabetic character shifted by the specified shift value.
+Decryption Function (decrypt):
+Parameters:
+text: The ciphertext message to be decrypted.
+shift: The number of positions each character in the ciphertext is shifted in the alphabet (which is the inverse of the encryption shift).
+Process:
+The decryption function simply calls the encrypt function with the negative of the shift value to perform the inverse operation.
+Return:
+The decrypted plaintext message.
+Example Usage:
+The example demonstrates how to encrypt the plaintext "hello world" with a shift of 3, and then decrypt the resulting ciphertext back to the original plaintext.
+The encrypted and decrypted messages are printed to the console.
+Note:
+The Caesar cipher is a simple substitution cipher where each letter in the plaintext is shifted a certain number of places down or up the alphabet. It's a type of symmetric encryption where the encryption and decryption keys are the same (the shift value).
+
+
+
+
+
+
+
+
+
+
+2.generalized ceaser
+
+def caesar_cipher(text, shift):
+    encrypted_text = ""
+    for char in text:
+        if char.isalpha():
+            shifted = ord(char) + shift
+            if char.islower():
+                if shifted > ord('z'):
+                    shifted -= 26
+                elif shifted < ord('a'):
+                    shifted += 26
+            elif char.isupper():
+                if shifted > ord('Z'):
+                    shifted -= 26
+                elif shifted < ord('A'):
+                    shifted += 26
+            encrypted_text += chr(shifted)
+        else:
+            encrypted_text += char
+    return encrypted_text
+
+# Example usage:
+text = "advfr"
+shift = 10
+encrypted_text = caesar_cipher(text, shift)
+print("Encrypted:", encrypted_text)
+
+
+
+
+
+
+3.affine cipher
+
+def egcd(a, b):
+    if a == 0:
+        return b, 0, 1
+    else:
+        gcd, x, y = egcd(b % a, a)
+        return gcd, y - (b // a) * x, x
+
+def mod_inverse(a, m):
+    gcd, x, y = egcd(a, m)
+    if gcd != 1:
+        raise Exception('Modular inverse does not exist')
+    else:
+        return x % m
+
+def affine_encrypt(text, a, b):
+    encrypted_text = ""
+    for char in text:
+        if char.isalpha():
+            if char.islower():
+                encrypted_text += chr(((ord(char) - ord('a')) * a + b) % 26 + ord('a'))
+            elif char.isupper():
+                encrypted_text += chr(((ord(char) - ord('A')) * a + b) % 26 + ord('A'))
+        else:
+            encrypted_text += char
+    return encrypted_text
+
+def affine_decrypt(text, a, b):
+    decrypted_text = ""
+    a_inverse = mod_inverse(a, 26)
+    for char in text:
+        if char.isalpha():
+            if char.islower():
+                decrypted_text += chr(((ord(char) - ord('a') - b) * a_inverse) % 26 + ord('a'))
+            elif char.isupper():
+                decrypted_text += chr(((ord(char) - ord('A') - b) * a_inverse) % 26 + ord('A'))
+        else:
+            decrypted_text += char
+    return decrypted_text
+
+# Example usage:
+text = "MY NAME IS ADITYA"
+a = 17
+b = 20
+encrypted_text = affine_encrypt(text, a, b)
+print("Encrypted:", encrypted_text)
+decrypted_text = affine_decrypt(encrypted_text, a, b)
+print("Decrypted:", decrypted_text)
+
+
+The provided code implements the Affine cipher encryption and decryption algorithms in Python. Let's break down each part of the code and then write the algorithm:
+
+Extended Euclidean Algorithm (egcd):
+Function: Computes the greatest common divisor (GCD) of two integers a and b and returns the GCD along with Bezout coefficients x and y such that gcd(a, b) = ax + by.
+Parameters:
+a: First integer.
+b: Second integer.
+Process:
+If a is zero, the GCD is b and the Bezout coefficients are 0 and 1 respectively.
+Otherwise, the function recursively calls itself with b % a and a and computes the GCD and Bezout coefficients using the extended Euclidean algorithm.
+Return:
+GCD of a and b.
+Bezout coefficients x and y.
+Modular Inverse Function (mod_inverse):
+Function: Computes the modular inverse of an integer a modulo m.
+Parameters:
+a: Integer for which the modular inverse is to be computed.
+m: Modulus.
+Process:
+Uses the extended Euclidean algorithm (egcd) to compute the GCD and Bezout coefficients of a and m.
+If the GCD is not 1 (indicating a is not coprime to m), raises an exception.
+Otherwise, returns the Bezout coefficient x modulo m.
+Return:
+Modular inverse of a modulo m.
+Affine Encryption Function (affine_encrypt):
+Function: Encrypts a plaintext message using the Affine cipher.
+Parameters:
+text: Plaintext message.
+a: Multiplicative key.
+b: Additive key.
+Process:
+Iterates over each character in the plaintext.
+If the character is alphabetic, computes its affine transformation (ax + b) % 26 and converts it back to an alphabetic character.
+Otherwise, leaves non-alphabetic characters unchanged.
+Return:
+Encrypted ciphertext.
+Affine Decryption Function (affine_decrypt):
+Function: Decrypts a ciphertext message encrypted with the Affine cipher.
+Parameters:
+text: Ciphertext message.
+a: Multiplicative key.
+b: Additive key.
+Process:
+Computes the modular inverse a_inverse of a modulo 26 using the mod_inverse function.
+Iterates over each character in the ciphertext.
+If the character is alphabetic, computes its inverse affine transformation ((x - b) * a_inverse) % 26 and converts it back to an alphabetic character.
+Otherwise, leaves non-alphabetic characters unchanged.
+Return:
+Decrypted plaintext.
+Example Usage:
+Demonstrates how to encrypt the plaintext "MY NAME IS ADITYA" using the Affine cipher with keys a = 17 and b = 20.
+Prints the encrypted ciphertext.
+Decrypts the ciphertext back to the original plaintext and prints it.
+Algorithm:
+The Affine cipher is a type of monoalphabetic substitution cipher, where each letter in an alphabet is mapped to its numeric equivalent, encrypted using a simple mathematical function, and converted back to a letter. The encryption function for a letter x is given by (ax + b) % m, where a and b are the keys, and m is the size of the alphabet. The decryption function is the inverse of the encryption function and is given by ((x - b) * a_inverse) % m, where a_inverse is the modular inverse of a modulo m.

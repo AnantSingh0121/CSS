@@ -1,0 +1,62 @@
+SSRF 
+(without burpsuite)
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSRF Example</title>
+<script>
+function performSSRF() {
+    // Craft the SSRF request URL
+    var url = "http://localhost:5500/"; //add your port number
+    
+    // Send a request to the SSRF URL using XMLHttpRequest
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            // Handle the response (e.g., display it on the page)
+            var response = xhr.responseText;
+            document.getElementById("output").innerText = response;
+        }
+    };
+    xhr.send();
+}
+</script>
+</head>
+<body>
+<h1>SSRF Example</h1>
+<button onclick="performSSRF()">Fetch Internal Resource</button>
+<div id="output"></div>
+</body>
+</html>
+
+Theory:
+Server-Side Request Forgery (SSRF) is a web security vulnerability that allows an attacker to manipulate requests sent by the server to other internal or external resources. SSRF attacks occur when an application accepts user-controlled input and uses it to fetch resources from URLs supplied within the request.
+
+Here's how SSRF attacks typically work and the potential impact they can have:
+
+1. **Vulnerability Identification**:
+   - The attacker identifies a web application that accepts user-supplied URLs for fetching resources, such as images, files, or API endpoints.
+   - The application does not properly validate or sanitize the user-controlled input, allowing the attacker to manipulate the URLs sent by the server.
+
+2. **Exploitation**:
+   - The attacker crafts a malicious request containing a URL pointing to internal or sensitive resources within the server's network.
+   - The attacker tricks the server into sending the crafted request to the specified URL.
+   - Since the request originates from the server, it may bypass network-level security controls and access internal resources that are not intended to be exposed to external users.
+
+3. **Types of SSRF Attacks**:
+   - **Fetching Internal Resources**: Attackers may use SSRF to access internal resources such as metadata servers, internal APIs, configuration files, or databases.
+   - **Accessing External Resources**: Attackers may also use SSRF to access external resources, such as performing port scanning, sending spam emails, or launching attacks against other systems.
+
+4. **Impact**:
+   - SSRF attacks can have serious consequences, including unauthorized access to sensitive information, data leakage, server-side code execution, and even complete compromise of the server or network.
+   - Attackers may use SSRF vulnerabilities to pivot within the network, escalate privileges, or launch further attacks against other systems or services.
+
+5. **Mitigation**:
+   - To mitigate SSRF vulnerabilities, developers should implement proper input validation and sanitization techniques to ensure that user-supplied URLs are safe.
+   - Limiting the server's ability to make requests to external resources or restricting access to internal resources can also help mitigate the risk of SSRF attacks.
+   - Additionally, network-level protections such as firewalls, intrusion detection systems, and secure network configurations can help detect and prevent SSRF attacks.
+
+Overall, SSRF vulnerabilities pose a significant risk to web applications and server environments. It's crucial for developers to implement robust security measures to mitigate the risk of SSRF attacks and protect sensitive resources from unauthorized access.

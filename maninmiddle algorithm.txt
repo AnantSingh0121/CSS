@@ -1,0 +1,103 @@
+maninmiddle
+
+def power(x, y):
+    prod = 1
+    for i in range(0, y):
+        prod = prod * x
+    return prod
+def r_calc(secret, g, p):
+    prod = power(g, secret)
+    return prod % p
+def key(g, x, y, p):
+    prod = power(g, (x * y))
+    return prod % p
+def DH(p, g, x, y, z):
+    R1 = r_calc(x, g, p)
+    R2 = r_calc(y, g, p)
+    R3 = r_calc(z, g, p)
+    print("R1 value:{},R3 value:{},R2 Value:{}".format(R1,R3,R2))
+    print("K1(A) value: ", r_calc(x, R3, p))
+    print("K2(C) value: ", r_calc(z, R1, p))
+    print("K3(C) value: ", r_calc(z, R2, p))
+    print("K4(B) value: ", r_calc(y, R3, p))
+    print("Encryption Key of A & C: ", key(g,x,z,p))
+    print("Encryption Key of B & C: ", key(g,y,z,p))
+print("********** MITM Attack ************")
+p = int(input("Enter the Modulus Value: "))
+g = int(input("Enter the primitive root Value: "))
+x = int(input("Enter the SecretKey of A: "))
+y = int(input("Enter the SecretKey of B: "))
+z = int(input("Enter the SecretKey of C: "))
+DH(p, g, x, y, z)
+
+CODE EXPLAINATION
+
+This Python script simulates a Man-in-the-Middle (MITM) attack on a Diffie-Hellman key exchange. In a MITM attack, an attacker intercepts and possibly alters the communication between two parties without their knowledge. Let's break down the code:
+
+1. **Function `power(x, y)`**:
+   - This function calculates \(x^y\) iteratively using a loop.
+
+2. **Function `r_calc(secret, g, p)`**:
+   - This function calculates \(g^{\text{secret}} \mod p\) using the `power` function.
+
+3. **Function `key(g, x, y, p)`**:
+   - This function calculates \(g^{xy} \mod p\) using the `power` function.
+
+4. **Function `DH(p, g, x, y, z)`**:
+   - This function simulates the Diffie-Hellman key exchange among three parties: A, B, and C.
+   - It calculates and prints the following values:
+     - \(R1 = g^x \mod p\) (value computed by A)
+     - \(R2 = g^y \mod p\) (value computed by B)
+     - \(R3 = g^z \mod p\) (value computed by C)
+     - \(K1 = R3^x \mod p\) (shared secret calculated by A)
+     - \(K2 = R1^z \mod p\) (shared secret calculated by C)
+     - \(K3 = R2^z \mod p\) (shared secret calculated by C)
+     - \(K4 = R3^y \mod p\) (shared secret calculated by B)
+     - Encryption keys for A & C, and B & C.
+
+5. **Main code**:
+   - It prompts the user to input the modulus `p`, the primitive root `g`, and the secret keys of A, B, and C (`x`, `y`, and `z` respectively).
+   - It then calls the `DH` function to perform the Diffie-Hellman key exchange simulation with the given parameters.
+
+In this simulation, the attacker (Mallory) intercepts the exchanged public values \(R1\), \(R2\), and \(R3\). By intercepting these values, the attacker can compute the shared secrets between each pair of parties and even compute encryption keys. This demonstrates how a MITM attack can compromise the security of a Diffie-Hellman key exchange.
+
+THEORY
+The Man-in-the-Middle (MITM) attack is a form of cyberattack where the attacker secretly intercepts and possibly alters the communication between two parties without their knowledge. The attacker positions themselves between the two communicating parties, hence the name "man in the middle," and can eavesdrop on the communication or manipulate the data being exchanged.
+
+Here's how a MITM attack typically works:
+
+1. **Interception**:
+   - The attacker positions themselves between two communicating parties, often by exploiting vulnerabilities in network protocols or by gaining access to an insecure network.
+   - The attacker intercepts the communication between the two parties, usually without either party's knowledge.
+
+2. **Eavesdropping**:
+   - The attacker can eavesdrop on the communication between the two parties, allowing them to monitor the exchanged data, including sensitive information such as passwords, financial transactions, or personal messages.
+
+3. **Data Manipulation**:
+   - In some cases, the attacker may alter the data being exchanged between the two parties. This could involve modifying messages, injecting malicious code or commands, or redirecting the communication to a different destination.
+
+4. **Impersonation**:
+   - The attacker may impersonate one or both of the communicating parties to gain unauthorized access or extract sensitive information. For example, the attacker might impersonate a legitimate website to steal login credentials or financial information from unsuspecting users.
+
+5. **Relay Attack**:
+   - In more sophisticated MITM attacks, the attacker may relay communication between the two parties while actively modifying or injecting malicious content. This can be especially effective in cryptographic protocols where the attacker can intercept and manipulate encrypted data.
+
+MITM attacks can occur in various scenarios and target different types of communication, including:
+
+1. Network Communication: Intercepting data transmitted over a network, such as Wi-Fi, Ethernet, or the Internet.
+2. Cryptographic Protocols: Exploiting vulnerabilities in cryptographic protocols, such as SSL/TLS, SSH, or VPNs, to intercept encrypted communication.
+3. Wireless Communication: Intercepting data transmitted over wireless networks, such as Bluetooth, NFC, or cellular networks.
+4. Application Communication: Intercepting communication between applications, such as messaging apps, email clients, or web browsers.
+
+Example of a MITM Attack:
+
+Let's consider an example of a MITM attack on a secure website login:
+
+1. Alice wants to log in to her bank's website (bank.com) to check her account balance.
+2. Eve, the attacker, positions herself between Alice's computer and the bank's server, intercepting the communication.
+3. When Alice attempts to log in, Eve captures her login credentials (username and password) as they are transmitted over the network.
+4. Eve then relays Alice's login request to the bank's server and captures the server's response.
+5. Eve may choose to modify the server's response to display incorrect account information or inject malicious code into the webpage.
+6. Meanwhile, Eve logs in to Alice's account using the captured credentials, gaining unauthorized access to her financial information.
+
+This example demonstrates how a MITM attacker can intercept, eavesdrop, and manipulate communication between two parties, potentially compromising sensitive information and undermining the security of online transactions.

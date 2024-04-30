@@ -1,0 +1,71 @@
+nmap
+
+1.tcp scan
+nmap -sT 192.168.1.100
+
+2.Xmas Scan
+sudo nmap -sX 192.168.1.100
+
+3.OS fingerprinting
+sudo nmap -O 192.168.1.100
+
+4.ping scanning
+nmap -sn 192.168.1.100
+
+5.port scanning
+nmap 192.168.1.100    
+
+
+COMMANDS EXPLAINATION
+
+1. TCP Scan (nmap -sT 192.168.1.100):
+This command performs a TCP scan on the target host 192.168.1.100.
+It sends TCP SYN packets to each port and analyzes the response to determine whether the port is open, closed, or filtered.
+TCP scans are the most common type of scan and are relatively stealthy, making them suitable for initial reconnaissance.
+
+2. Xmas Scan (sudo nmap -sX 192.168.1.100):
+This command performs an Xmas scan on the target host 192.168.1.100.
+An Xmas scan sets the FIN, URG, and PSH flags in the TCP header, which are unusual combinations, and then observes the response.
+Xmas scans are used to detect certain types of firewall configurations and to evade detection, as they may not be logged as regular scans.
+
+3. OS Fingerprinting (sudo nmap -O 192.168.1.100):
+This command performs OS fingerprinting on the target host 192.168.1.100.
+OS fingerprinting involves analyzing the responses from the target host to determine its operating system.
+Nmap sends various probes and examines the responses to identify patterns that can help determine the OS.
+
+4. Ping Scanning (nmap -sn 192.168.1.100):
+This command performs a ping scan on the target host 192.168.1.100.
+It sends ICMP echo requests (pings) to the target host to check its online/offline status without scanning specific ports.
+Ping scanning is useful for quickly determining which hosts are active on a network.
+
+5. Port Scanning (nmap 192.168.1.100):
+This command performs a default port scan on the target host 192.168.1.100.
+It scans the most common 1,000 TCP ports to determine which ports are open and which services are running on the target host.
+Port scanning is a fundamental technique in network reconnaissance and is used to identify potential entry points for further investigation or exploitation.
+
+THEORY
+Nmap is a widely used open-source network scanning tool available on Kali Linux, a Debian-based Linux distribution designed for digital forensics and penetration testing. As a powerful network reconnaissance tool, Nmap enables users to discover hosts and services on computer networks, assess network security, and perform various types of scans to gather information about hosts and their open ports.
+
+Here's an explanation of Nmap and its features on Kali Linux:
+
+1. **Installation**:
+   - Nmap is pre-installed on Kali Linux, making it readily available for network scanning tasks.
+
+2. **Usage**:
+   - Nmap is used from the command line interface (CLI) in Kali Linux.
+   - Users can run various Nmap commands with different options and parameters to perform specific types of scans and tasks.
+
+3. **Features**:
+   - **Host Discovery**: Nmap can be used to discover hosts on a network using techniques like ping scanning (`-sn` option).
+   - **Port Scanning**: Nmap can scan for open ports on target hosts to identify running services and potential vulnerabilities. Options include TCP SYN scan (`-sS`), TCP Connect scan (`-sT`), UDP scan (`-sU`), etc.
+   - **Service Version Detection**: Nmap can determine the version of services running on open ports (`-sV` option).
+   - **OS Fingerprinting**: Nmap can attempt to identify the operating system of target hosts based on responses to network probes (`-O` option).
+   - **Scripting Engine**: Nmap includes a scripting engine (NSE) that allows users to run custom scripts to automate tasks, perform additional checks, or exploit vulnerabilities.
+   - **Output Formats**: Nmap can generate output in various formats, including plain text, XML, and grepable format, allowing users to analyze scan results and integrate them with other tools.
+   - **Interactive Mode**: Nmap provides an interactive mode (`nmap -i`) where users can dynamically adjust scan parameters and options.
+
+4. **Security Considerations**:
+   - Users must exercise caution when using Nmap, as scanning networks without proper authorization may be illegal and unethical.
+   - It's important to ensure that scanning activities comply with applicable laws, regulations, and organizational policies.
+
+Overall, Nmap is a versatile and essential tool for network reconnaissance and security assessment on Kali Linux. It provides a wide range of features and options to help users gather valuable information about network hosts, services, and vulnerabilities.

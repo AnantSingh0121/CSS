@@ -1,0 +1,57 @@
+HTML INJECTION
+
+http://testphp.vulnweb.com/login.php
+username:test
+password:test
+
+Enter the following in name field
+
+<script>alert(document.cookie)</script>
+
+“><marquee><p><h1>Hacked</h1></p></marquee>
+
+<textarea id="HTML" name="HTML" rows="4" cols="50">Html injected</textarea>
+
+<style>h1 {color:red;}</style><h1>This is a heading</h1>
+
+<button type="button">Click Me!</button>
+
+<dialog open>Html</dialog>
+
+<img src="index.jpg" alt="Girl in a jacket" width="500" height="600">
+
+<li>Html</li>
+
+<i>HTML</i>
+
+<u>HTML</u>
+
+THEORY
+HTML injection, also known as HTML code injection, is a type of web vulnerability that occurs when an attacker is able to inject malicious HTML or JavaScript code into a web page. This vulnerability typically arises when user-supplied input is improperly validated or sanitized by the web application.
+
+Here's an overview of HTML injection:
+
+1. **Injection Points**:
+   - HTML injection vulnerabilities can occur in various parts of a web application, including input fields, URL parameters, form submissions, cookies, HTTP headers, and more.
+
+2. **Attack Vector**:
+   - An attacker exploits HTML injection by injecting malicious HTML or JavaScript code into the vulnerable input fields or parameters. This code is then rendered by the victim's browser when they access the affected page.
+
+3. **Impact**:
+   - The impact of HTML injection can vary depending on the context and functionality of the vulnerable page. Common consequences include:
+     - Cross-Site Scripting (XSS): If the injected code includes JavaScript, it may lead to XSS attacks, allowing the attacker to steal cookies, session tokens, or other sensitive information from users.
+     - Defacement: The attacker may modify the appearance of the web page by injecting HTML code to display defamatory, offensive, or misleading content.
+     - Phishing: HTML injection can be used to create convincing phishing pages that mimic legitimate websites, tricking users into disclosing their credentials or personal information.
+
+4. **Detection**:
+   - HTML injection vulnerabilities can be detected through manual code review, automated vulnerability scanning tools, or penetration testing techniques. Look for input validation and sanitization mechanisms that may be missing or insufficient.
+
+5. **Prevention**:
+   - To prevent HTML injection vulnerabilities, web developers should implement proper input validation and output encoding techniques:
+     - Input Validation: Validate and sanitize all user-supplied input to ensure that it conforms to expected formats and does not contain malicious content.
+     - Output Encoding: Encode user-generated content before rendering it in HTML output to prevent it from being interpreted as HTML or JavaScript code.
+
+6. **Example**:
+   - An example of HTML injection vulnerability might occur in a comment section of a blog. If the web application fails to properly sanitize user-submitted comments, an attacker could inject malicious HTML or JavaScript code into the comment field. When other users view the comment section, their browsers will execute the injected code, potentially leading to XSS attacks or other malicious activities.
+
+HTML injection vulnerabilities pose significant risks to web applications and their users. It's crucial for web developers to implement robust security measures to mitigate the risk of exploitation. Regular security assessments and thorough testing can help identify and address HTML injection vulnerabilities before they can be exploited by attackers.

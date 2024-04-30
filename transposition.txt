@@ -1,0 +1,414 @@
+Transposition
+
+1.vigenere
+
+def vigenere_encrypt(plain_text, key):
+    encrypted_text = ""
+    key_length = len(key)
+    for i in range(len(plain_text)):
+        char = plain_text[i]
+        if char.isalpha():
+            if char.islower():
+                shift = ord(key[i % key_length]) - ord('a')
+                encrypted_char = chr((ord(char) - ord('a') + shift) % 26 + ord('a'))
+            elif char.isupper():
+                shift = ord(key[i % key_length]) - ord('A')
+                encrypted_char = chr((ord(char) - ord('A') + shift) % 26 + ord('A'))
+            encrypted_text += encrypted_char
+        else:
+            encrypted_text += char
+    return encrypted_text
+
+def vigenere_decrypt(encrypted_text, key):
+    decrypted_text = ""
+    key_length = len(key)
+    for i in range(len(encrypted_text)):
+        char = encrypted_text[i]
+        if char.isalpha():
+            if char.islower():
+                shift = ord(key[i % key_length]) - ord('a')
+                decrypted_char = chr((ord(char) - ord('a') - shift) % 26 + ord('a'))
+            elif char.isupper():
+                shift = ord(key[i % key_length]) - ord('A')
+                decrypted_char = chr((ord(char) - ord('A') - shift) % 26 + ord('A'))
+            decrypted_text += decrypted_char
+        else:
+            decrypted_text += char
+    return decrypted_text
+
+# Example usage:
+plain_text = "GEEKSFORGEEKS"
+key = "AYUSH"
+encrypted_text = vigenere_encrypt(plain_text, key)
+print("Encrypted:", encrypted_text)
+decrypted_text = vigenere_decrypt(encrypted_text, key)
+print("Decrypted:", decrypted_text)
+
+
+The provided code implements the Vigenère cipher encryption and decryption algorithms in Python. Let's break down each part of the code and then describe the Vigenère cipher algorithm:
+
+Vigenère Encryption Function (vigenere_encrypt):
+Function: Encrypts a plaintext message using the Vigenère cipher.
+Parameters:
+plain_text: The plaintext message to be encrypted.
+key: The key used for encryption.
+Process:
+Iterates over each character in the plaintext.
+For each alphabetic character (determined using char.isalpha()), it calculates the shift value based on the corresponding character in the key.
+It then applies the shift to the plaintext character, considering both uppercase and lowercase alphabetic characters.
+Non-alphabetic characters are left unchanged.
+Return:
+The encrypted ciphertext.
+Vigenère Decryption Function (vigenere_decrypt):
+Function: Decrypts a ciphertext message encrypted with the Vigenère cipher.
+Parameters:
+encrypted_text: The ciphertext message to be decrypted.
+key: The key used for decryption.
+Process:
+Similar to encryption, it iterates over each character in the ciphertext and calculates the shift value based on the corresponding character in the key.
+It applies the inverse shift to the ciphertext character to retrieve the original plaintext character.
+Non-alphabetic characters are left unchanged.
+Return:
+The decrypted plaintext.
+Example Usage:
+Demonstrates how to encrypt the plaintext "GEEKSFORGEEKS" using the Vigenère cipher with the key "AYUSH".
+Prints the encrypted ciphertext.
+Decrypts the ciphertext back to the original plaintext and prints it.
+Vigenère Cipher Algorithm:
+The Vigenère cipher is a polyalphabetic substitution cipher, where the encryption of each character in the plaintext depends on a key. The key is repeated to match the length of the plaintext. Each character in the plaintext is shifted according to the corresponding character in the key, with wraparound occurring if necessary. The Vigenère cipher is more secure than simple substitution ciphers like Caesar cipher because it introduces variability in the encryption process. However, it can still be vulnerable to frequency analysis if the key is too short or poorly chosen.
+
+
+
+
+
+
+
+2.playfair
+
+def generate_key_matrix(key):
+    key = key.upper().replace(" ", "")
+    key = key.replace("J", "I")
+    # Initialize matrix with letters from the key
+    matrix = []
+    for char in key:
+        if char not in matrix and char.isalpha():
+            matrix.append(char)
+    # Fill in the remaining letters (skipping 'J')
+    alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
+    for char in alphabet:
+        if char not in matrix:
+            matrix.append(char)
+    # Reshape matrix into 5x5 grid
+    key_matrix = [matrix[i:i+5] for i in range(0, 25, 5)]
+    return key_matrix
+
+def draw_key_matrix(matrix):
+    for row in matrix:
+        print(" ".join(row))
+
+def prepare_text(text):
+    # Convert to uppercase and remove spaces
+    text = text.upper().replace(" ", "")
+    # Replace 'J' with 'I' (optional step)
+    text = text.replace("J", "I")
+    # Break text into digraphs
+    digraphs = []
+    i = 0
+    while i < len(text):
+        if i == len(text) - 1 or text[i] == text[i + 1]:
+            digraphs.append(text[i] + 'X')
+            i += 1
+        else:
+            digraphs.append(text[i:i + 2])
+            i += 2
+    return digraphs
+
+def find_positions(matrix, char):
+    for i in range(5):
+        for j in range(5):
+            if matrix[i][j] == char:
+                return (i, j)
+
+def encrypt(digraphs, key_matrix):
+    encrypted_text = ""
+    for digraph in digraphs:
+        char1, char2 = digraph[0], digraph[1]
+        row1, col1 = find_positions(key_matrix, char1)
+        row2, col2 = find_positions(key_matrix, char2)
+        if row1 == row2:
+            encrypted_text += key_matrix[row1][(col1 + 1) % 5] + key_matrix[row2][(col2 + 1) % 5]
+        elif col1 == col2:
+            encrypted_text += key_matrix[(row1 + 1) % 5][col1] + key_matrix[(row2 + 1) % 5][col2]
+        else:
+            encrypted_text += key_matrix[row1][col2] + key_matrix[row2][col1]
+    return encrypted_text
+
+# Example usage:
+plaintext = "CRYPTOGRAPHY AND SYSTEM SECURITY"
+key = "ENCRYPT"
+digraphs = prepare_text(plaintext)
+key_matrix = generate_key_matrix(key)
+
+# Draw the key matrix
+print("Key Matrix:")
+draw_key_matrix(key_matrix)
+
+# Encrypt the plaintext
+encrypted_text = encrypt(digraphs, key_matrix)
+print("\nEncrypted Text:", encrypted_text)
+
+
+
+The provided code implements the Playfair cipher encryption algorithm in Python. Let's break down each part of the code and then describe the Playfair cipher algorithm:
+
+Key Matrix Generation Function (generate_key_matrix):
+Function: Generates a 5x5 key matrix based on the given key.
+Parameters:
+key: The key used to generate the key matrix.
+Process:
+Converts the key to uppercase and removes spaces.
+Replaces 'J' with 'I' (as 'I' and 'J' are usually treated as the same letter in the Playfair cipher).
+Initializes the matrix with letters from the key (ignoring duplicates).
+Fills in the remaining letters of the alphabet (excluding 'J') to complete the matrix.
+Reshapes the list into a 5x5 grid.
+Return:
+The generated key matrix.
+Key Matrix Drawing Function (draw_key_matrix):
+Function: Prints the key matrix in a readable format.
+Parameters:
+matrix: The key matrix to be drawn.
+Process:
+Prints each row of the matrix with spaces between letters.
+Output:
+The key matrix printed to the console.
+Text Preparation Function (prepare_text):
+Function: Prepares the plaintext for encryption.
+Parameters:
+text: The plaintext message to be prepared.
+Process:
+Converts the text to uppercase and removes spaces.
+Replaces 'J' with 'I' (as 'I' and 'J' are usually treated as the same letter in the Playfair cipher).
+Breaks the text into digraphs (pairs of letters), padding with 'X' if necessary to ensure even length.
+Return:
+The list of digraphs.
+Position Finding Function (find_positions):
+Function: Finds the row and column indices of a character in the key matrix.
+Parameters:
+matrix: The key matrix to search.
+char: The character to find.
+Process:
+Iterates through the matrix to find the position of the character.
+Return:
+The row and column indices of the character.
+Encryption Function (encrypt):
+Function: Encrypts plaintext digraphs using the Playfair cipher algorithm.
+Parameters:
+digraphs: The plaintext digraphs to be encrypted.
+key_matrix: The key matrix used for encryption.
+Process:
+For each digraph, finds the positions of the two characters in the key matrix.
+If the characters are in the same row, replaces them with the characters to their right (circularly).
+If the characters are in the same column, replaces them with the characters below them (circularly).
+If the characters are in different rows and columns, forms a rectangle and replaces them with the characters at the opposite corners of the rectangle.
+Return:
+The encrypted ciphertext.
+Example Usage:
+Demonstrates how to encrypt the plaintext "CRYPTOGRAPHY AND SYSTEM SECURITY" using the Playfair cipher with the key "ENCRYPT".
+Draws the key matrix.
+Prints the encrypted ciphertext.
+Playfair Cipher Algorithm:
+The Playfair cipher is a polygraphic substitution cipher that encrypts pairs of letters (digraphs) at a time. It uses a 5x5 key matrix, usually filled with a keyword (excluding repeated letters) followed by the remaining letters of the alphabet. During encryption, each pair of letters is replaced with another pair of letters based on their positions in the key matrix, following three rules: (1) if the letters are in the same row, they are replaced by the letters to their right (circularly), (2) if they are in the same column, they are replaced by the letters below them (circularly), and (3) if they form a rectangle, they are replaced by the letters at the opposite corners of the rectangle.
+
+
+3.keyLESS BASED ON ROW
+
+def encrypt_rail_fence(plain_text, rails):
+    fence = [['\n' for i in range(len(plain_text))] for j in range(rails)]
+    rail = 0
+    for i in range(len(plain_text)):
+        fence[rail][i] = plain_text[i]
+        if rail == 0:
+            direction = 1
+        elif rail == rails - 1:
+            direction = -1
+        rail += direction
+    cipher_text = ''
+    for i in range(rails):
+        for j in range(len(plain_text)):
+            if fence[i][j] != '\n':
+                cipher_text += fence[i][j]
+    return cipher_text
+
+
+def decrypt_rail_fence(cipher_text, rails):
+    fence = [['\n' for i in range(len(cipher_text))] for j in range(rails)]
+    rail = 0
+    for i in range(len(cipher_text)):
+        fence[rail][i] = '*'
+        if rail == 0:
+            direction = 1
+        elif rail == rails - 1:
+            direction = -1
+        rail += direction
+    index = 0
+    for i in range(rails):
+        for j in range(len(cipher_text)):
+            if fence[i][j] == '*' and index < len(cipher_text):
+                fence[i][j] = cipher_text[index]
+                index += 1
+    rail = 0
+    plain_text = ''
+    for i in range(len(cipher_text)):
+        plain_text += fence[rail][i]
+        if rail == 0:
+            direction = 1
+        elif rail == rails - 1:
+            direction = -1
+        rail += direction
+    return plain_text
+
+
+# Example usage:
+plaintext = "HELLOIAMADITYA"
+rails = 3
+encrypted_text = encrypt_rail_fence(plaintext, rails)
+print("Encrypted:", encrypted_text)
+decrypted_text = decrypt_rail_fence(encrypted_text, rails)
+print("Decrypted:", decrypted_text)
+
+
+The provided code implements the Rail Fence cipher encryption and decryption algorithms in Python. Let's break down each part of the code and then describe the Rail Fence cipher algorithm:
+
+Encryption Function (encrypt_rail_fence):
+Function: Encrypts a plaintext message using the Rail Fence cipher.
+Parameters:
+plain_text: The plaintext message to be encrypted.
+rails: The number of rails (rows) in the rail fence.
+Process:
+Initializes a 2D list fence to represent the rail fence with dimensions rails x len(plain_text).
+Iterates through the plaintext and places each character in the appropriate position in the rail fence.
+Uses a rail variable to track the current rail and direction variable to control the movement up and down the rails.
+Constructs the ciphertext by reading the characters from the rail fence row by row.
+Return:
+The encrypted ciphertext.
+Decryption Function (decrypt_rail_fence):
+Function: Decrypts a ciphertext message encrypted with the Rail Fence cipher.
+Parameters:
+cipher_text: The ciphertext message to be decrypted.
+rails: The number of rails (rows) in the rail fence.
+Process:
+Initializes a 2D list fence to represent the rail fence with dimensions rails x len(cipher_text).
+Fills the rail fence with placeholder '*' characters to indicate the positions where the ciphertext characters will be placed during decryption.
+Iterates through the ciphertext and fills the rail fence with the characters in the same pattern as during encryption.
+Constructs the plaintext by reading the characters from the rail fence row by row.
+Return:
+The decrypted plaintext.
+Example Usage:
+Demonstrates how to encrypt the plaintext "HELLOIAMADITYA" using the Rail Fence cipher with 3 rails.
+Prints the encrypted ciphertext.
+Decrypts the ciphertext back to the original plaintext and prints it.
+Rail Fence Cipher Algorithm:
+The Rail Fence cipher is a transposition cipher that rearranges the plaintext characters by writing them in a zigzag pattern across a certain number of "rails" (rows) and then reading off the ciphertext row by row. During encryption, characters are written diagonally, with the direction changing when reaching the top or bottom rail. During decryption, the same pattern is followed to reconstruct the original plaintext. The number of rails used determines the complexity of the encryption.
+
+
+
+
+
+4. KEYLESS BASED ON COLUMN
+
+def encrypt_column_rail_fence(plain_text, rails):
+    # Calculate the rail height dynamically
+    rail_height = len(plain_text) // rails + (1 if len(plain_text) % rails != 0 else 0)
+    
+    # Initialize the fence matrix
+    fence = [['' for _ in range(len(plain_text))] for _ in range(rails)]
+
+    # Fill the fence matrix with plaintext characters
+    for i, char in enumerate(plain_text):
+        rail = i % rails
+        fence[rail][i // rails] = char
+
+    # Construct the encrypted text from the fence matrix
+    encrypted_text = ''.join(''.join(row) for row in fence)
+    return encrypted_text
+
+def decrypt_column_rail_fence(cipher_text, rails):
+    # Calculate the rail height dynamically
+    rail_height = len(cipher_text) // rails + (1 if len(cipher_text) % rails != 0 else 0)
+
+    # Initialize the fence matrix
+    fence = [['' for _ in range(len(cipher_text))] for _ in range(rails)]
+
+    # Fill the fence matrix with '*' to mark positions of encrypted characters
+    index = 0
+    for i in range(rails):
+        for j in range(len(cipher_text)):
+            if j % rail_height == 0:
+                fence[i][j] = '*'
+                index += 1
+                if index == len(cipher_text):
+                    break
+
+    # Fill the fence matrix with cipher text characters
+    index = 0
+    for i in range(rails):
+        for j in range(len(cipher_text)):
+            if fence[i][j] == '*' and index < len(cipher_text):
+                fence[i][j] = cipher_text[index]
+                index += 1
+
+    # Construct the decrypted text from the fence matrix
+    decrypted_text = ''.join(''.join(row) for row in fence)
+    return decrypted_text
+
+# Example usage:
+plaintext = "SOFTWAREENGINEER"
+rails = 4
+encrypted_text = encrypt_column_rail_fence(plaintext, rails)
+print("Encrypted:", encrypted_text)
+decrypted_text = decrypt_column_rail_fence(encrypted_text, rails)
+print("Decrypted:", decrypted_text)
+
+
+The provided code implements the Rail Fence cipher encryption and decryption algorithms in Python. Let's break down each part of the code and then describe the Rail Fence cipher algorithm:
+
+Encryption Function (encrypt_rail_fence):
+Function: Encrypts a plaintext message using the Rail Fence cipher.
+Parameters:
+plain_text: The plaintext message to be encrypted.
+rails: The number of rails (rows) in the rail fence.
+Process:
+Initializes a 2D list fence to represent the rail fence with dimensions rails x len(plain_text).
+Iterates through the plaintext and places each character in the appropriate position in the rail fence.
+Uses a rail variable to track the current rail and direction variable to control the movement up and down the rails.
+Constructs the ciphertext by reading the characters from the rail fence row by row.
+Return:
+The encrypted ciphertext.
+Decryption Function (decrypt_rail_fence):
+Function: Decrypts a ciphertext message encrypted with the Rail Fence cipher.
+Parameters:
+cipher_text: The ciphertext message to be decrypted.
+rails: The number of rails (rows) in the rail fence.
+Process:
+Initializes a 2D list fence to represent the rail fence with dimensions rails x len(cipher_text).
+Fills the rail fence with placeholder '*' characters to indicate the positions where the ciphertext characters will be placed during decryption.
+Iterates through the ciphertext and fills the rail fence with the characters in the same pattern as during encryption.
+Constructs the plaintext by reading the characters from the rail fence row by row.
+Return:
+The decrypted plaintext.
+Algorithm:
+The Rail Fence cipher is a transposition cipher that rearranges the plaintext characters by writing them in a zigzag pattern across a certain number of "rails" (rows) and then reading off the ciphertext row by row. During encryption, characters are written diagonally, with the direction changing when reaching the top or bottom rail. During decryption, the same pattern is followed to reconstruct the original plaintext. The number of rails used determines the complexity of the encryption.
+
+Here's the algorithm for the Rail Fence cipher:
+
+Encryption:
+Create a 2D array (rail fence) with dimensions rails x length_of_plaintext.
+Place each character of the plaintext in the appropriate position in the rail fence, following a zigzag pattern.
+Read off the characters row by row to generate the ciphertext.
+Decryption:
+Create a 2D array (rail fence) with dimensions rails x length_of_ciphertext.
+Fill the rail fence with placeholder characters (*) to indicate the positions where the ciphertext characters will be placed during decryption.
+Place each character of the ciphertext in the rail fence following the same zigzag pattern used during encryption.
+Read off the characters row by row to reconstruct the original plaintext.
+
+

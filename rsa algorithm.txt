@@ -1,0 +1,77 @@
+RSA
+
+
+def k_calc(nn,e):
+    for i in range(0,100):
+        if (1+i*nn)%e==0:
+            d=(1+i*nn)//e
+            return d,i
+            break
+def cipher(pt,e,N):
+    cip=((pt)**e)%N
+    return cip
+p=int(input("Enter the P: "))
+q=int(input("Enter the Q: "))
+e=int(input("Enter the SecretKey: "))
+pt=int(input("Enter the Plain Text: "))
+N=p*q
+nn=(p-1)*(q-1)
+d,k=k_calc(nn,e)
+print("Value of D is: ",d,"for K =",k)
+ct=cipher(pt,e,N)
+print("Cipher: ",ct)
+print("Decipher: ",cipher(ct,d,N))
+
+CODE EXPLAINATION
+
+This code is an implementation of the RSA encryption and decryption algorithm in Python. Here's an explanation of each part of the code:
+
+1. **Function `k_calc(nn, e)`**:
+   - This function calculates the private key `d` and a value `k` based on the given parameters `nn` and `e`.
+   - It iterates through a range of numbers from 0 to 99.
+   - For each iteration, it checks if `(1 + i * nn) % e == 0`. If this condition is true, it means that `d` and `e` satisfy the condition for RSA encryption.
+   - It calculates `d` as `(1 + i * nn) // e` and returns `d` along with the value of `i` (denoted as `k` in the main code).
+
+2. **Function `cipher(pt, e, N)`**:
+   - This function performs RSA encryption.
+   - It takes the plaintext `pt`, public key `e`, and modulus `N` as input.
+   - It calculates the ciphertext `cip` using the formula `((pt) ** e) % N` and returns the result.
+
+3. **Main code**:
+   - It prompts the user to input the prime numbers `p` and `q`, the public key `e`, and the plaintext `pt`.
+   - It calculates the modulus `N` as `p * q` and `nn` as `(p-1) * (q-1)`.
+   - It calls the `k_calc` function to calculate the private key `d` and `k`.
+   - It prints the calculated values of `d` and `k`.
+   - It calls the `cipher` function to encrypt the plaintext `pt` using the public key `e` and modulus `N` and prints the ciphertext `ct`.
+   - It decrypts the ciphertext using the private key `d` and modulus `N` and prints the resulting plaintext.
+
+The RSA encryption algorithm involves generating a public and private key pair (`e` and `d`) based on two large prime numbers (`p` and `q`). The modulus `N` is calculated as the product of `p` and `q`, and `nn` is calculated as `(p-1) * (q-1)`. The plaintext is encrypted using the public key `e`, and the ciphertext is decrypted using the private key `d`.
+
+
+THEORY
+RSA (Rivest-Shamir-Adleman) is a widely used asymmetric cryptographic algorithm named after its inventors Ronald Rivest, Adi Shamir, and Leonard Adleman. It is one of the first public-key cryptosystems and is commonly used for secure data transmission.
+
+In RSA, encryption and decryption are performed using a pair of keys: a public key and a private key. These keys are mathematically related, but it is computationally infeasible to deduce one key from the other. The public key is used for encryption, while the private key is used for decryption.
+
+Here's a brief overview of how RSA works:
+
+1. **Key Generation**:
+   - Choose two large prime numbers, typically denoted as `p` and `q`.
+   - Calculate their product `N = p * q`, which is used as the modulus for both the public and private keys.
+   - Calculate Euler's totient function `φ(N) = (p-1) * (q-1)`.
+   - Choose an integer `e` such that `1 < e < φ(N)` and `e` is coprime with `φ(N)`. `e` is the public exponent.
+   - Calculate the private exponent `d` such that `d * e ≡ 1 (mod φ(N))`. `d` is the private exponent.
+
+2. **Encryption**:
+   - To encrypt a message `M`, the sender uses the recipient's public key `(e, N)`.
+   - The ciphertext `C` is calculated as `C ≡ M^e (mod N)`, where `^` denotes exponentiation.
+
+3. **Decryption**:
+   - To decrypt the ciphertext `C`, the recipient uses their private key `d`.
+   - The plaintext `M` is calculated as `M ≡ C^d (mod N)`.
+
+RSA provides several security properties:
+- The security of RSA is based on the difficulty of factoring large composite numbers into their prime factors, and on the difficulty of computing discrete logarithms modulo a composite number that is the product of two primes.
+- The security of RSA relies on the difficulty of factoring large numbers, which forms the basis of its resistance against attacks.
+
+RSA is widely used in various applications such as secure communication, digital signatures, and encryption of symmetric keys in key exchange protocols. However, it's important to use sufficiently large key sizes to resist attacks, as the security of RSA depends on the difficulty of certain mathematical problems.

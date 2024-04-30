@@ -1,0 +1,61 @@
+HASHING ALGO
+
+def md4(message): 
+    # Constants 
+    A, B, C, D = 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476 
+    
+    # Padding 
+    message += b'\x80' 
+    while len(message) % 64 != 56: 
+        message += b'\x00' 
+    message += (len(message) * 8 - 64).to_bytes(8, 'little') 
+    
+    # Process each 512-bit block 
+    for i in range(0, len(message), 64): 
+        block = [int.from_bytes(message[i+j:i+j+4], 'little') for j in range(0, 64, 4)] 
+        AA, BB, CC, DD = A, B, C, D 
+        
+        # Round 1 
+        for i in range(16): 
+            k, s = i, [3, 7, 11, 19][i % 4] 
+            A = left_rotate((A + F(B, C, D) + block[k]) & 0xFFFFFFFF, s) 
+            A, B, C, D = D, A, B, C 
+        
+        # Round 2 
+        for i in range(16): 
+            k, s = [0, 4, 8, 12, 1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15][i], [3, 5, 9, 13][i % 4] 
+            A = left_rotate((A + G(B, C, D) + block[k] + 0x5A827999) & 0xFFFFFFFF, s) 
+            A, B, C, D = D, A, B, C 
+        
+        # Round 3 
+        for i in range(16): 
+            k, s = [0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15][i], [3, 9, 11, 15][i % 4] 
+            A = left_rotate((A + H(B, C, D) + block[k] + 0x6ED9EBA1) & 0xFFFFFFFF, s) 
+            A, B, C, D = D, A, B, C 
+        
+        # Update variables 
+        A = (A + AA) & 0xFFFFFFFF 
+        B = (B + BB) & 0xFFFFFFFF 
+        C = (C + CC) & 0xFFFFFFFF 
+        D = (D + DD) & 0xFFFFFFFF 
+    
+    # Concatenate result 
+    result = A.to_bytes(4, 'little') + B.to_bytes(4, 'little') + C.to_bytes(4, 'little') + D.to_bytes(4, 'little') 
+    return result.hex() 
+
+def F(x, y, z): 
+    return (x & y) | (~x & z) 
+
+def G(x, y, z): 
+    return (x & y) | (x & z) | (y & z) 
+
+def H(x, y, z): 
+    return x ^ y ^ z 
+
+def left_rotate(value, shift): 
+    return ((value << shift) & 0xFFFFFFFF) | (value >> (32 - shift)) 
+
+# Example Usage: 
+message = b"hello there!" 
+hash_result = md4(message) 
+print("MD4 Hash:", hash_result)

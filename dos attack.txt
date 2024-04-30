@@ -1,0 +1,51 @@
+DOS Attack
+
+open wireshark
+start packet capturing
+start browser and search google.com
+open cmd 
+and execute following commands
+
+sudo apt-get install hping3
+
+sudo hping3 -S --flood -p 80 google.com
+
+open wireshark
+the packets capturing screen should turn red 
+DONE!
+
+Theory
+
+A Denial of Service (DoS) attack is a malicious attempt to disrupt the normal functioning of a targeted server, service, or network by overwhelming it with a flood of illegitimate requests or traffic. The goal of a DoS attack is to make a resource unavailable to its intended users, causing a denial of service to legitimate users.
+
+Here's how a DoS attack typically works:
+
+1. **Target Selection**:
+   - The attacker identifies a target server, service, or network that they want to disrupt.
+
+2. **Attack Preparation**:
+   - The attacker may gather information about the target to identify vulnerabilities or weak points that can be exploited.
+   - They may also prepare or acquire tools and resources needed to launch the attack, such as botnets, compromised computers, or specialized software.
+
+3. **Attack Execution**:
+   - The attacker initiates the attack by sending a large volume of malicious traffic or requests to the target.
+   - This flood of traffic overwhelms the target's resources, such as bandwidth, CPU, memory, or network connections.
+   - As a result, the target becomes unable to process legitimate requests from users, causing a denial of service.
+
+4. **Impact**:
+   - The impact of a DoS attack can vary depending on the target and the severity of the attack.
+   - It can lead to service disruptions, website downtime, slow performance, or complete unavailability of the targeted resource.
+   - In some cases, a DoS attack can also have financial implications, such as loss of revenue for online businesses or damage to reputation.
+
+5. **Detection and Mitigation**:
+   - Detecting and mitigating DoS attacks can be challenging, as they often involve a large volume of traffic that can be difficult to distinguish from legitimate traffic.
+   - Organizations may use various techniques and tools, such as intrusion detection systems (IDS), firewalls, rate limiting, traffic filtering, or content delivery networks (CDNs), to detect and mitigate DoS attacks.
+
+6. **Types of DoS Attacks**:
+   - There are several types of DoS attacks, including:
+     - **Volumetric Attacks**: Flood the target with a large volume of traffic, such as UDP floods or ICMP floods.
+     - **Protocol Attacks**: Exploit weaknesses in network protocols or application protocols to consume server resources, such as SYN floods or HTTP floods.
+     - **Application Layer Attacks**: Target specific applications or services to exhaust server resources, such as Slowloris or HTTP POST floods.
+     - **Distributed DoS (DDoS) Attacks**: Coordinated attacks launched from multiple sources to amplify the impact of the attack.
+
+DoS attacks pose significant threats to the availability and integrity of online services and networks. Organizations should implement robust security measures and response strategies to detect, mitigate, and prevent DoS attacks effectively. Additionally, raising awareness about the importance of cybersecurity and practicing good security hygiene can help mitigate the risk of DoS attacks.

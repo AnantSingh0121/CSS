@@ -1,0 +1,27 @@
+network cmnds
+
+1.ping
+ping www.google.com
+
+2.traceroute
+traceroute www.google.com
+
+3.whois
+whois www.google.com
+
+4.nslookup
+nslookup www.google.com
+
+5.nmap
+nmap www.google.com
+
+
+6.hostname
+hostname
+
+
+7. netstat
+netstat -t
+netstat -u
+netstat -l
+netstat -n

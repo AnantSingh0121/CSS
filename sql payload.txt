@@ -1,0 +1,56 @@
+SQL payload
+Enter the following data in username and password can be anything
+
+admin'--
+
+' or 1=1--
+
+admin' or '1'='1
+
+admin' or '1'='1'--
+
+admin'or 1=1 or ''='
+
+admin' or 1=1--
+
+' OR 'x'='x'--
+
+admin' or '1'='1'--\t
+
+admin' or '1'='1' --+
+
+admin' or'1'='1' --
+
+
+Other websites: https://www.hacksplaining.com/lessons/sql-injection
+
+THEORY
+SQL injection is a type of web vulnerability that occurs when an attacker is able to manipulate or inject malicious SQL code into a web application's input fields or parameters. This vulnerability arises when user-supplied data is improperly validated, concatenated, or sanitized by the application, allowing the attacker to execute arbitrary SQL commands.
+
+Here's an overview of SQL injection:
+
+1. **Injection Points**:
+   - SQL injection vulnerabilities typically occur in web applications that use dynamic SQL queries to interact with databases.
+   - Common injection points include input fields, URL parameters, form submissions, cookies, HTTP headers, and more.
+
+2. **Attack Vector**:
+   - An attacker exploits SQL injection by inserting malicious SQL code into the vulnerable input fields or parameters. This code is then executed by the application's database server when the query is processed.
+
+3. **Impact**:
+   - The impact of SQL injection can be severe, allowing attackers to:
+     - Retrieve sensitive data: Attackers can extract data from the database, including usernames, passwords, credit card numbers, and other confidential information.
+     - Modify or delete data: Attackers can manipulate or delete data stored in the database, potentially causing data loss or integrity issues.
+     - Execute arbitrary commands: Attackers can execute arbitrary SQL commands, such as adding new records, dropping tables, or executing system commands.
+
+4. **Detection**:
+   - SQL injection vulnerabilities can be detected through manual code review, automated vulnerability scanning tools, or penetration testing techniques. Look for input validation and parameterized queries that may be missing or insufficient.
+
+5. **Prevention**:
+   - To prevent SQL injection vulnerabilities, web developers should implement proper input validation and parameterized queries:
+     - Input Validation: Validate and sanitize all user-supplied input to ensure that it conforms to expected formats and does not contain malicious content.
+     - Parameterized Queries: Use parameterized queries or prepared statements to construct SQL queries dynamically, instead of concatenating user input directly into the query string.
+
+6. **Example**:
+   - An example of SQL injection vulnerability might occur in a login form of a web application. If the application constructs SQL queries using user-supplied input without proper validation, an attacker could manipulate the login credentials to bypass authentication or gain unauthorized access to the application's backend database.
+
+SQL injection vulnerabilities pose significant risks to web applications and their users. It's crucial for web developers to implement robust security measures to mitigate the risk of exploitation. Regular security assessments and thorough testing can help identify and address SQL injection vulnerabilities before they can be exploited by attackers.

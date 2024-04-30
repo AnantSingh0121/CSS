@@ -1,0 +1,95 @@
+DH ALGO
+diffie helman
+
+def power(x,y):
+    prod=1
+    for i in range(0,y):
+        prod=prod*x
+    return prod
+def r_calc(secret,g,p):
+    prod=power(g,secret)
+    return prod%p
+def key(g,x,y,p):
+    prod=power(g,(x*y))
+    return (g**(x*y))%p
+def DH(p,g,x,y):
+    print("R1 value: ")
+    R1=r_calc(x,g,p)
+    print(R1)
+    print("R2 value: ")
+    R2=r_calc(y,g,p)
+    print(R2)
+    print("K1 value: ",r_calc(x,R2,p))
+    print("K2 value: ",r_calc(y,R1,p))
+    print("k3 value: ",key(g,x,y,p))
+print("********** DH Algorithm ************")
+p=int(input("Enter the Modulus Value: "))
+g=int(input("Enter the primitive root Value: "))
+x=int(input("Enter the SecretKey of A: "))
+y=int(input("Enter the SecretKey of B: "))
+DH(p,g,x,y)
+
+CODE EXPLANATION
+This Python script implements the Diffie-Hellman key exchange algorithm, a method used for securely exchanging cryptographic keys over a public channel. Here's how the code works:
+
+1. **Function `power(x, y)`**:
+   - This function calculates the power of `x` raised to `y` (i.e., \(x^y\)) using a simple iterative method.
+   - It initializes a variable `prod` to 1 and iterates `y` times, multiplying `prod` by `x` in each iteration.
+
+2. **Function `r_calc(secret, g, p)`**:
+   - This function calculates \(g^{\text{secret}} \mod p\), where `secret` is the secret key, `g` is the primitive root, and `p` is the modulus.
+   - It calls the `power` function to compute the power of `g` raised to `secret`, and then takes the result modulo `p`.
+
+3. **Function `key(g, x, y, p)`**:
+   - This function calculates the shared secret key \(g^{xy} \mod p\) using the secret keys of both parties (`x` and `y`), the primitive root `g`, and the modulus `p`.
+   - It directly computes \(g^{xy} \mod p\) using the formula provided.
+
+4. **Function `DH(p, g, x, y)`**:
+   - This function simulates the Diffie-Hellman key exchange protocol.
+   - It calculates and prints the following values:
+     - \(R1 = g^x \mod p\) (the value calculated by party A)
+     - \(R2 = g^y \mod p\) (the value calculated by party B)
+     - \(K1 = R2^x \mod p\) (the shared secret calculated by party A)
+     - \(K2 = R1^y \mod p\) (the shared secret calculated by party B)
+     - \(K3 = g^{xy} \mod p\) (another way of calculating the shared secret)
+
+5. **Main code**:
+   - It prompts the user to input the modulus `p`, the primitive root `g`, and the secret keys of both parties (`x` for party A and `y` for party B).
+   - It then calls the `DH` function to perform the Diffie-Hellman key exchange and prints the calculated values.
+
+In the Diffie-Hellman key exchange, both parties compute a shared secret key without directly exchanging it over the public channel. This shared key can then be used for secure communication or symmetric encryption. The security of the algorithm relies on the difficulty of the discrete logarithm problem.
+
+THEORY
+The Diffie-Hellman key exchange (DH) is a method used to securely exchange cryptographic keys over a public channel. It allows two parties to establish a shared secret key even if they have no prior knowledge of each other. The shared key can then be used for symmetric encryption of subsequent communication.
+
+Here's an overview of how the Diffie-Hellman key exchange works:
+
+1. **Setup**:
+   - Two parties, typically denoted as Alice and Bob, agree on two public parameters:
+     - A large prime number \( p \), which serves as the modulus.
+     - A primitive root \( g \) modulo \( p \), which generates all possible residues modulo \( p \).
+
+2. **Key Generation**:
+   - Each party independently chooses a secret key:
+     - Alice selects a secret integer \( x \).
+     - Bob selects a secret integer \( y \).
+
+3. **Exchange**:
+   - Alice and Bob compute public values based on their secret keys and the agreed-upon parameters:
+     - Alice calculates \( R_1 = g^x \mod p \).
+     - Bob calculates \( R_2 = g^y \mod p \).
+   - Alice and Bob exchange their public values \( R_1 \) and \( R_2 \) over the public channel.
+
+4. **Key Derivation**:
+   - Alice and Bob independently compute the shared secret key using the public value received from the other party and their own secret key:
+     - Alice computes the shared secret as \( K_1 = R_2^x \mod p \).
+     - Bob computes the shared secret as \( K_2 = R_1^y \mod p \).
+
+5. **Shared Secret**:
+   - Both Alice and Bob now have the same shared secret key \( K_1 = K_2 \), which they can use for secure communication.
+
+The security of the Diffie-Hellman key exchange relies on the discrete logarithm problem, which states that it is computationally infeasible to determine the secret exponent (\( x \) or \( y \)) given the public values \( R_1 \), \( R_2 \), \( g \), and \( p \). This makes it difficult for an eavesdropper to determine the shared secret key even if they intercept the public values exchanged between Alice and Bob.
+
+The Diffie-Hellman key exchange is widely used in cryptographic protocols such as TLS (Transport Layer Security) and SSH (Secure Shell) to establish secure communication channels over insecure networks.
+
+
